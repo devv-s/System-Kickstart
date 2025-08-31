@@ -1,0 +1,10 @@
+vms:
+  hosts:
+    192.168.122.184:
+      ansible_user: user1
+
+
+local:
+  hosts:
+    localhost:
+      ansible_connection: local
