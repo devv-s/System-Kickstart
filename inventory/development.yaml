@@ -1,9 +1,21 @@
+---
+ungrouped:
+  hosts:
+    fedora_ws_vm:
+      ansible_user: user1
+      ansible_host: 192.168.122.184
+    fedora_base_vm:
+      ansible_user: user2
+      ansible_host: 192.168.122.130
+
 vms:
   hosts:
     fedora_ws_vm:
       ansible_user: user1
       ansible_host: 192.168.122.184
-
+    fedora_base_vm:
+      ansible_user: user2
+      ansible_host: 192.168.122.130
 
 local:
   hosts:
