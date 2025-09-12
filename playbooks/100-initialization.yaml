@@ -5,6 +5,10 @@
   # [TechDebt] find a way to have the hosts value be more flexible.
   hosts: fedora_ws_vm
   become: no
+  vars:
+    user_bin_dir: '~/.local/bin'
+    user_installation_dir: '~/.installations'
+    user_env_vars_dir: '~/.bashrc.d'
 
   tasks:
     - name: Create a app installation folder.
@@ -17,13 +21,6 @@
         path: "{{ user_bin_dir }}"
         state: 'directory'
 
-    - name: Add app binaries folder to the PATH.
-      ansible.builtin.lineinfile:
-        path: "{{ user_env_vars_dir }}"
-        state: 'present'
-        regex: '^export PATH=*'
-        line: "export PATH=$PATH:{{ user_bin_dir }}"
-
     - name: Ensure user settings folder(s).
       ansible.builtin.file:
         path: '~/.bashrc.d'
@@ -31,8 +28,15 @@
 
     - name: Create user env vars file.
       ansible.builtin.file:
-        path: "{{ user_env_vars_dir }}"
+        path: "{{ user_env_vars_dir }}/env_vars"
         state: 'touch'
+
+    - name: Add app binaries folder to the PATH.
+      ansible.builtin.lineinfile:
+        path: "{{ user_env_vars_dir }}/env_vars"
+        state: 'present'
+        regex: '^export PATH=*'
+        line: "export PATH=$PATH:{{ user_bin_dir }}"
 
 
 
