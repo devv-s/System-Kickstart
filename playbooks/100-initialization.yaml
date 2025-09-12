@@ -1,0 +1,38 @@
+---
+# This playbook creates files, folders, links etc specific to a user.
+# These tasks should not involve any root privileges to be completed.
+- name: Initial Common Setup
+  # [TechDebt] find a way to have the hosts value be more flexible.
+  hosts: fedora_ws_vm
+  become: no
+
+  tasks:
+    - name: Create a app installation folder.
+      ansible.builtin.file:
+        path: "{{ user_installation_dir }}"
+        state: 'directory'
+
+    - name: Create a app binaries folder.
+      ansible.builtin.file:
+        path: "{{ user_bin_dir }}"
+        state: 'directory'
+
+    - name: Add app binaries folder to the PATH.
+      ansible.builtin.lineinfile:
+        path: "{{ user_env_vars_dir }}"
+        state: 'present'
+        regex: '^export PATH=*'
+        line: "export PATH=$PATH:{{ user_bin_dir }}"
+
+    - name: Ensure user settings folder(s).
+      ansible.builtin.file:
+        path: '~/.bashrc.d'
+        state: 'directory'
+
+    - name: Create user env vars file.
+      ansible.builtin.file:
+        path: "{{ user_env_vars_dir }}"
+        state: 'touch'
+
+
+
