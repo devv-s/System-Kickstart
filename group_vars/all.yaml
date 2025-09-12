@@ -1,0 +1,12 @@
+---
+# Common VARS
+user_bin_dir: '~/.local/bin'
+user_installation_dir: '~/.installations'
+user_env_vars_dir: '~/.bashrc.d/env_vars'
+
+# Flatpak VARS
+flatpak_repo_url: 'https://flathub.org/repo/flathub.flatpakrepo'
+flatpak_apps:
+  browser: "com.zen.browser"
+  api_client: "flatpak_apps.api_client"
+
