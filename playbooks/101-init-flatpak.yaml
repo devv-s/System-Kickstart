@@ -1,0 +1,19 @@
+---
+- name: Configuring Flatpak and Flabhub.
+  become: yes
+
+  tasks:
+    - name: Installing flatpak.
+      ansible.builtin.dnf:
+        name: flatpak
+        state: present
+
+    - name: Enabling Flathub.
+      community.general.flatpak_remote:
+        name: Flathub
+        state: present
+        flatpakrepo_url: "{{ flatpak_repo_url }}"
+        method: system
+
+
+
