@@ -1,0 +1,10 @@
+---
+- name: Common Tools Setup
+  hosts: fedora_ws_vm
+  become: yes
+
+  tasks:
+    - name: Installing the browser.
+      community.general.flatpak:
+          name: "{{ flatpak.apps.browser }}"
+
