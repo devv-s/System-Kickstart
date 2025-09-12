@@ -1,6 +1,9 @@
 ---
 - name: Configuring Flatpak and Flabhub.
+  hosts: fedora_ws_vm
   become: yes
+  vars:
+    flatpak_repo_url: 'https://flathub.org/repo/flathub.flatpakrepo'
 
   tasks:
     - name: Installing flatpak.
