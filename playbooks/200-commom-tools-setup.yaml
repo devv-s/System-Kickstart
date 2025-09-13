@@ -6,6 +6,11 @@
     flatpak_apps:
       browser: "app.zen_browser.zen"
 
+    media_players:
+      - "vlc"
+      - "mpv"
+      - "ffmpeg"  # for all the codecs used to play videos.
+
   tasks:
     - name: Installing the browser.
       community.general.flatpak:
@@ -26,3 +31,8 @@
         state: present
         disable_gpg_check: true
 
+    - name: Installing media players.
+      ansible.builtin.dnf:
+        name: "{{ media_players }}"
+        allowerasing: true
+        autoremove: true
