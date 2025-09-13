@@ -3,7 +3,7 @@
   hosts: fedora_ws_vm
   become: yes
   vars:
-    flatpak_repo_url: 'https://flathub.org/repo/flathub.flatpakrepo'
+    flatpak_repo_url: "https://dl.flathub.org/repo/flathub.flatpakrepo"
 
   tasks:
     - name: Installing flatpak.
@@ -13,10 +13,10 @@
 
     - name: Enabling Flathub.
       community.general.flatpak_remote:
-        name: Flathub
+        name: flathub # should be lowercased.
         state: present
         flatpakrepo_url: "{{ flatpak_repo_url }}"
-        method: system
+        method: "system"
 
 
 
