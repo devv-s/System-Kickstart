@@ -14,3 +14,15 @@
         remote: "flathub"
         method: system
 
+    - name: Download RPM Fusion Free release package
+      ansible.builtin.get_url:
+        url: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+        dest: "/tmp/rpmfusion-free-release.rpm"
+        mode: '0644'
+
+    - name: Install RPM Fusion Free release package
+      ansible.builtin.dnf:
+        name: "/tmp/rpmfusion-free-release.rpm"
+        state: present
+        disable_gpg_check: true
+
