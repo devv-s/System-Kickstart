@@ -1,3 +1,13 @@
 ---
-- name: Setting up tools for development
+- name: Setting development tools.
+  hosts: fedora_ws_vm
+  become: yes
+
+  tasks:
+    - name: Installing the API client.
+      community.general.flatpak:
+        name: "{{ flatpak_apps.api_client }}"
+        state: present
+        remote: "flathub"
+        method: system
 
