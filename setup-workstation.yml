@@ -1,0 +1,8 @@
+---
+- name: Full Fedora Workstation Setup
+  hosts: workstation
+  become: true
+
+  roles:
+    - common
+    - desktop
