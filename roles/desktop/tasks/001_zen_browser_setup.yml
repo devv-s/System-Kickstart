@@ -1,0 +1,20 @@
+---
+- name: Ensure /opt/zen directory exists
+  ansible.builtin.file:            # FQCN
+    path: "{{ zen_browser_install_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Download and extract Zen Browser
+  ansible.builtin.unarchive:       # FQCN
+    src: "{{ zen_browser_tar_url }}"
+    dest: "{{ zen_browser_install_path }}"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+    creates: "{{ zen_install_path }}/zen-bin"
+
+- name: Create symlink to /usr/local/bin
+  ansible.builtin.file:            # FQCN
+    src: "{{ zen_install_path }}/zen-bin"
+    dest: "{{ zen_bin_path }}"
+    state: link

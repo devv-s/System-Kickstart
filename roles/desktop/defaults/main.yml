@@ -1,0 +1,4 @@
+---
+  zen_browser_tar_url: "https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz"
+  zen_browser_install_path: "/opt/zen"
+  zen_browser_bin_path: "/usr/local/bin/zen"
