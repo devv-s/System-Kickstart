@@ -1,0 +1,17 @@
+---
+- name: Update all system packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+
+- name: Install base utilities
+  ansible.builtin.dnf:
+    name:
+      - curl
+      - git
+      - htop
+      - neovim
+      - wget
+      - tree
+      - fastfetch
+    state: present
