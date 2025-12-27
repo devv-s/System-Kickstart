@@ -70,7 +70,10 @@ jobs:
           ansible-galaxy collection install community.general
 
       - name: Install Ansible Collections
-        run: ansible-galaxy collection install -r requirements.yml
+        run: |
+          # This is the fix for the 'containers.podman' error
+          ansible-galaxy collection install containers.podman
+          ansible-galaxy collection install community.general
 
       - name: Run Molecule
         run: |
