@@ -18,7 +18,7 @@ pip install -r requirements.txt
 
 # 3. Install Ansible Collections
 echo "🌌 Installing Ansible collections..."
-ansible-galaxy collection install -r requirements.yml
+ansible-galaxy collection install -r requirements.yml -p ./collections
 
 # 4. Success message
 echo "------------------------------------------------"
