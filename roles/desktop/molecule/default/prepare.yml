@@ -1,0 +1,15 @@
+---
+- name: Prepare Test Environment
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Install python for Ansible
+      ansible.builtin.raw: dnf install -y python3
+      changed_when: false
+
+    - name: Install dependencies for testing
+      ansible.builtin.dnf:
+        name:
+          - tar
+          - bzip2
+        state: present

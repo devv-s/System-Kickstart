@@ -1,0 +1,9 @@
+---
+# Purpose: bring the instance to the desired state by running the role under test.
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Include 'desktop' role
+      ansible.builtin.include_role:
+        name: "desktop"

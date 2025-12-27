@@ -1,0 +1,23 @@
+---
+# Purpose: assert that the instance really ended up in the expected state.
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: "Include role 'defaults'"
+      ansible.builtin.include_role:
+        name: "desktop"
+        public: true
+
+    - name: Check if Zen Browser binary exists
+      ansible.builtin.stat:
+        path: "{{ zen_browser_bin_path }}"
+      register: zen_binary
+
+    - name: Assert Zen Browser is installed
+      ansible.builtin.assert:
+        that:
+          - zen_binary.stat.exists
+          - zen_binary.stat.executable
+        fail_msg: "Zen Browser binary not found!"
+        success_msg: "Zen Browser is installed."
