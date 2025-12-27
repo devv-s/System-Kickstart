@@ -1,0 +1,73 @@
+name: Ansible CI
+
+on:
+  push:
+    branches: [main, develop, feature/*, defect/*]
+    paths:
+      - 'roles/**'
+      - 'inventories/**'
+      - 'requirements.txt'
+      - '.github/workflows/ci.yml'
+
+  pull_request:
+    branches: [main, develop]
+
+  workflow_dispatch:
+    inputs:
+      target_roles:
+        description: 'Comma separated role names to be tested. Default: all.'
+        required: false
+        default: 'all'
+        
+jobs:
+  roles-detection:
+    runs-on: ubuntu-latest
+    outputs:
+      roles: ${{ steps.set-roles.outputs.roles }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: set-roles
+        run: |
+          ROLES_FOR_TEST="${{ github.event.inputs.target_roles }}"
+
+          if [[ -n "$ROLES_FOR_TEST" ]]; then
+            # Convert "desktop, common" -> ["desktop", "common"]
+            # We use jq to trim whitespace and format as a valid JSON array
+            ROLES_JSON=$(echo "$ROLES_FOR_TEST" | jq -R 'split(",") | map(gsub("^\\s+|\\s+$"; ""))' -c)
+          else
+            # Automatic discovery: Find all directories in roles/ containing a molecule/ folder
+            ROLES_JSON=$(find roles -maxdepth 2 -type d -name "molecule" | cut -d'/' -f2 | jq -R -s -c 'split("\n")[:-1]')
+          fi
+          
+          echo "roles=$ROLES_JSON" >> $GITHUB_OUTPUT
+
+  tests-run:
+    needs: roles-detection
+    runs-on: ubuntu-latest
+    if: ${{ needs.roles-detection.outputs.roles != '[]' && needs.roles-detection.outputs.roles != '' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        role: ${{ fromJson(needs.roles-detection.outputs.roles) }}
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          ansible-galaxy collection install community.general
+
+      - name: Run Molecule
+        run: |
+          cd roles/${{ matrix.role }}
+          molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
