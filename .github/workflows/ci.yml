@@ -16,8 +16,8 @@ on:
     inputs:
       target_roles:
         description: 'Comma separated role names to be tested. Default: all.'
-        required: false
-        default: 'all'
+        required: true
+        default: ''
         
 jobs:
   roles-detection:
