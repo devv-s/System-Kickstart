@@ -1,5 +1,5 @@
 ansible-core
 molecule
-molecule-plugins[podman]
+molecule-podman
 ansible-lint
 rich
