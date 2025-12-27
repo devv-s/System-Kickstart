@@ -1,0 +1,5 @@
+ansible-core==2.17.7
+molecule==25.12.0
+molecule-podman==2.0.3
+ansible-lint
+rich
