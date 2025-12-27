@@ -44,7 +44,7 @@ jobs:
   tests-run:
     needs: roles-detection
     runs-on: ubuntu-latest
-    if: ${{ needs.roles-detection.outputs.roles != '[]' && needs.roles-detection.outputs.roles != '' }}
+    if: ${{ needs.roles-detection.outputs.roles != '[]' }}
     strategy:
       fail-fast: false
       matrix:
@@ -56,7 +56,7 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y podman
+          sudo apt-get install -y podman jq
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -65,15 +65,12 @@ jobs:
           cache: 'pip'
 
       - name: Install Python Dependencies
-        run: |
-          pip install -r requirements.txt
-          ansible-galaxy collection install community.general
+        run: pip install -r requirements.txt
 
       - name: Install Ansible Collections
         run: |
           # This is the fix for the 'containers.podman' error
-          ansible-galaxy collection install containers.podman
-          ansible-galaxy collection install community.general
+          ansible-galaxy collection install -r requirements.yml -p ./ansible_collections
 
       - name: Run Molecule
         run: |
@@ -82,4 +79,3 @@ jobs:
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
-          ANSIBLE_COLLECTIONS_PATH: /home/runner/.ansible/collections:/usr/share/ansible/collections
