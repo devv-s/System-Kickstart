@@ -49,20 +49,28 @@ jobs:
       fail-fast: false
       matrix:
         role: ${{ fromJson(needs.roles-detection.outputs.roles) }}
-
+        
     steps:
       - uses: actions/checkout@v4
       
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: 'pip'
 
-      - name: Install Dependencies
+      - name: Install Python Dependencies
         run: |
           pip install -r requirements.txt
           ansible-galaxy collection install community.general
+
+      - name: Install Ansible Collections
+        run: ansible-galaxy collection install -r requirements.yml
 
       - name: Run Molecule
         run: |
