@@ -84,13 +84,13 @@ jobs:
 
   all-tests-passed:
     name: "All Roles Validation"
-    needs: test-run
+    needs: tests-run
     runs-on: ubuntu-latest
     if: always() 
     steps:
       - name: Decide Status
         run: |
-          if [[ "${{ needs.test-run.result }}" == "success" ]]; then
+          if [[ "${{ needs.tests-run.result }}" == "success" ]]; then
             echo "✅ All Molecule tests passed."
             exit 0
           else
